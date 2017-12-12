@@ -55,23 +55,18 @@ class RSA
 	end
 
 	def encrypt message
-		encrypted_message = Array.new
-		message.bytes.each do |byte|
-			byte = ((byte**@e)% @n)
-			encrypted_message.push(byte)
-			encrypted_message.push("f")
+		encrypted = Array.new
+		message.bytes.each do |symbol|
+			encrypted.push((symbol**@e)% @n )
 		end
-		encrypted_message = encrypted_message.join
-		encrypted_message 
+		encrypted 
 	end
 
 	def decrypt message 
-		decrypted_message = String.new
-		message = message.split("f")
+		decrypted = String.new
 		message = message.map {|e| e.to_i}
-		message.each do |element|
-			element = (element**@d) % @n
-			decrypted_message << element.chr
+		message.each do |symbol|
+			decrypted << ((symbol**@d) % @n ).chr
 		end
 		decrypted_message 
 	end
