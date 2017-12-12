@@ -44,30 +44,40 @@ class RSA
 		end
 		@n = p*q
 		carm_n = (p-1).lcm(q-1)
-		for i in rand(2..carm_n-2)..carm_n
-			if(i.gcd(carm_n)==1)
-				@e = i
-				break
-			end
-		end
+		@e = calc_e(carm_n)
 		@d = create_d(e, carm_n)
 		return n, e, d
 	end
-   
+   	
+	def calc_e c_n
+		while true
+			num = rand(20..20202).to_i
+			if Prime.prime?(num) && coprime(num, c_n)
+				break			
+			end
+		end
+		num
+	end
+
+	def coprime a, b 
+		if a.gcd(b) == 1 then true
+		else false end	
+	end
+
 	def encrypt message
-  		encrypted = Array.new
+  		encrypted = []
   		message.bytes.each do |symbol|
-			encrypted.push((symbol^@e) % @n )
+			encrypted << (symbol ** @e) % @n
   		end
   		encrypted
   	end
      
   	def decrypt message
-      		decrypted = Array.new
+      	decrypted = []
   		message.each do |symbol|
- 			decrypted.push(((symbol^@d) % @n ).chr)
+ 			decrypted << (symbol ** @d) % @n 
   		end	
-  		decrypted	
+  		decrypted.map {|let| let.chr}.join	
   	end 
 
 end
