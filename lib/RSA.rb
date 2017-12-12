@@ -72,8 +72,3 @@ class RSA
 	end
 
 end
-
-test = RSA.new(0,0,0)
-test.new_key
-puts test.encrypt("abcdefg")
-
