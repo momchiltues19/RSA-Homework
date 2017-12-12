@@ -27,7 +27,7 @@ RSpec.describe RSA do
 			it "a sentance" do
 				rsa.new_key
 				expect(rsa.decrypt(rsa.encrypt("Hi, how are you?"))).to eq "Hi, how are you?"
-      		end
-    	end
-  	end
+			end
+		end
+	end
 end
