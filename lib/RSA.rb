@@ -18,7 +18,7 @@ class RSA
 	end
 
 	def random_prime
-		for i in rand(10..1000)...1009
+		for i in rand(50..1000)...1009
 			if(Prime.prime?(i))
 				return i
 			end
