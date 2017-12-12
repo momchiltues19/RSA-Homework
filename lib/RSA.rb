@@ -54,21 +54,28 @@ class RSA
 		return n, e, d
 	end
    
-	def encrypt message
-		encrypted = Array.new
-		message.bytes.each do |symbol|
-			encrypted.push((symbol^@e) % @n )
-		end
-		return encrypted
-	end
-   
-	def decrypt message
-    	decrypted = Array.new
-		message.each do |symbol|
-			decrypted.push(((symbol^@d) % @n ).chr)
-		end	
-		return decrypted	
-	end 
+	  def encrypt message
+    encrypted_array = Array.new
+
+    message.each_char do |ch|
+      ch = ch.ord #.ord -> to ascii
+      encrypted_char = ch ** e % n
+      encrypted_array << encrypted_char
+    end
+
+    encrypted_array = encrypted_array.to_s[1..-2]
+    encrypted_array
+  end
+
+  def decrypt message
+    decrypted_array = String.new
+    message.split(', ').each do |num|
+      decrypted_char = num.to_i ** d % n
+      decrypted_array << decrypted_char.chr # .chr -> to char
+    end
+    decrypted_array
+  end
+
 end
 
 test = RSA.new(0,0,0)
