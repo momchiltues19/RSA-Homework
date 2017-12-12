@@ -29,5 +29,5 @@ class RSA
    end 
 end
 
-test = RSA.new
+test = RSA.new(1,2,3)
 print test.n
