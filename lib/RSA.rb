@@ -7,19 +7,15 @@ class RSA
 		@d = d
 	end
 	
-	def egcd(a, b)
-		if(a==0)
-			return b, 0, 1
-		else
-			g, y, x = egcd(b % a, a )
-			return g, x - (b/a) * y, y
+	def create_d a, c_n
+		for i in 2..c_n
+			help_d = (i*a) % c_n
+			if (help_d == 1)
+				break
+			end
 		end
+		help_d
 	end
-	#egcd was made with the help of stack overflow
-	def modinv(a, m)
-		g, y, x = egcd(a, m)
-		return x % m 
-	end 
 
 	def random_prime
 		for i in rand(10..1000)...1009
@@ -48,21 +44,20 @@ class RSA
 		end
 		@n = p*q
 		carm_n = (p-1).lcm(q-1)
-		while(true)
-			i = rand(20..carm_n)
+		for i in rand(2..carm_n-2)..carm_n
 			if(i.gcd(carm_n)==1)
 				@e = i
 				break
 			end
 		end
-		@d = modinv(e, carm_n)
+		@d = create_d(e, carm_n)
 		return n, e, d
 	end
    
 	def encrypt message
 		encrypted = Array.new
 		message.bytes.each do |symbol|
-			encrypted.push(((symbol^@e) % @n ).chr)
+			encrypted.push((symbol^@e) % @n )
 		end
 		return encrypted
 	end
@@ -70,7 +65,7 @@ class RSA
 	def decrypt message
     	decrypted = Array.new
 		message.each do |symbol|
-			decrypted.push((((symbol.ord)^(@e*@d)) % @n ).chr)
+			decrypted.push(((symbol^@d) % @n ).chr)
 		end	
 		return decrypted	
 	end 
