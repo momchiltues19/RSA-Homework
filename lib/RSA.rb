@@ -68,7 +68,7 @@ class RSA
 		message.each do |symbol|
 			decrypted << ((symbol**@d) % @n ).chr
 		end
-		decrypted_message 
+		decrypted
 	end
 
 end
