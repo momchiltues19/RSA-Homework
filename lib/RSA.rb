@@ -20,9 +20,9 @@ class RSA
 	def random_prime
 		for i in rand(50..1000)...1009
 			if(Prime.prime?(i))
-				return i
+				return i			
 			end
-		end	
+		end
 	end 	
 	def n
 		@n
@@ -57,23 +57,24 @@ class RSA
 	def encrypt message
 		encrypted = Array.new
 		message.bytes.each do |symbol|
-			encrypted.push((symbol**@e)% @n )
+			symbol = (symbol**@e)% @n
+			encrypted.push(symbol)
 		end
 		encrypted 
 	end
 
 	def decrypt message 
 		decrypted = String.new
-		message = message.map {|e| e.to_i}
+		message = message.map {|char| char.to_i}
 		message.each do |symbol|
-			decrypted << ((symbol**@d) % @n ).chr
+			symbol = ((symbol**@d) % @n )			
+			decrypted << symbol.chr
 		end
-		decrypted_message 
+		decrypted
 	end
 
 end
 
 test = RSA.new(0,0,0)
 test.new_key
-puts test.encrypt("abcdefg")
-
+puts test.decrypt(test.encrypt("abcdefg"))
